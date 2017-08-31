@@ -2,7 +2,7 @@
 
 ## Importing a txt file with a date
 
-File: (datasets/volume.txt)[datasets/volume.txt] contains the following data: 
+File: [datasets/volume.txt](datasets/volume.txt) contains the following data: 
 
 ```
 Permno|Date|vol_bmo|vol_amc|rev_bmo|rev_amc

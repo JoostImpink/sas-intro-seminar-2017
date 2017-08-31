@@ -1,8 +1,8 @@
-# Matching with IBES: Comparing `%ICLINK` with matching on CUSIP
+# Matching with IBES
 
 ## Match using gvkey-permno-cusip
 
-Run the macro `getFundaWithIBESTicker` (included in [/macros/getFundaWithIBESTicker.sas](macros/getFundaWithIBESTicker.sas))
+Run the macro `getFundaWithIBESTicker` (included in [macros/getFundaWithIBESTicker.sas](macros/getFundaWithIBESTicker.sas))
 
 ```SAS
 %getFundaWithIBESTicker(dsout=a_funda_ibes, fundaVars=at sale ceq);
