@@ -7,7 +7,7 @@ An endogeneity problem occurs when an explanatory variable is correlated with th
 - Simultaneity (bi-directionality)
 - Selection bias (self-selection) 
 
-Examples:
+### Examples
 
 Firms that diversity (conglomerates) are found to be trading at a discount relative to 'pure' play (undiversified) firms (Berger and Ofek 1995). Is diversification the cause of the discount? Not necessarily, possibly poor performing pure play firms are more likely to diversify and diversification may have created value.
 
@@ -20,9 +20,9 @@ Why do firms voluntary disclose bad news? Bad news disclosures reduce the stock 
 Methods to deal with selection bias:
 
 - Propensity score matching (PSM), by finding a matched (control) firm that is closest to the treatment firm -- based on observable data
-- Heckman selection model, by adding a selection model where a bias correction term is estimated which is then included in the (second stage) regression
+- Heckman selection model, by adding a selection model where a bias correction term is estimated which is then included in the (second stage) regression 
 
-
+In Heckman the correction is based on the correlation of (unobservable) error terms; this is important so there is no need to find instruments that are correlated with the error term (instruments that explain the choice, but not explain the outcome is needed).
 
 ## Heckman selection test
 
@@ -30,20 +30,21 @@ The wage-offer self-selection to illustrate the mechanics of this test.
 
 Suppose wage is modelled using education and age:
 
-Wage: `wage = b0 + b1 education + b2 age + e1`
+`wage = b0 + b1 education + b2 age + e1`
 
-The problem is that wage is only available for people that participate. Workers that have withdrawn have no pay. The above regression is the joint model of:
+The problem is that wage is only available for people that participate. Workers that have withdrawn have no pay. So we need to model the selection decision, in this case whether or not to join the labor force: 
 
+`inForce = a0 + a1 ... + a2 ... + e2`
 
-Laborforce: `inForce = a0 + a1 ... + a2 ... + e2`, inForce = 1 if inForce > 0, and 0 otherwise (wage is missing if inForce <= 0) - the independent variables in this regression are the instruments and should explain the selection but not the outcome (wage)
+Using a probit model, inForce is 1 if the latent inForce* is positive, and 0 otherwise (wage is missing if inForce <= 0). The independent variables in this regression are the instruments and should explain the selection but not the outcome (wage).
 
 If `e1` and `e2` are not correlated, there would be no issue. Self selection becomes an issue if `corr(e1,e2) = rho` does not equal 0
 
-Under the assumption that `e1` and `e2` have a bivariate normal distribution, conditional of joining the labor force wage is:
+Conditional of joining the labor force [i.e. `inForce = 1`,  wage is:
 
-E[wage|inForce=1] = b0 + b1 education + b2 age + E[e1 | wage, inForce = 1]
+`E[wage|inForce=1] = b0 + b1 education + b2 age + E[e1 | wage, inForce = 1]`
 
-
+The mechanics of the Heckman model assume that `e1` and `e2` have a bivariate normal distribution.
 
 ## Output Heckman selection test
 
@@ -53,7 +54,7 @@ Software `Limdep` (short for limited dependent) is a well known tool to do 'exot
 
 In Stata run:
 
-```
+```Stata
 use "S:\_Joost\2017_methods_ufl\wages.dta", clear
 
 // note: 1343 obs
@@ -67,7 +68,7 @@ Internally, Stata does note explictily estimates rho (correlation) and sigma (st
 
 Not using ML but a twostep procedure instead:
 
-```
+```Stata
 heckman wage educ age, select(married children educ age) twostep
 ```
 
@@ -76,7 +77,7 @@ heckman wage educ age, select(married children educ age) twostep
 If the predicted inverse Mills ratio is not statistically different from 0, OLS regression results are consistent.
 
 
-```
+```Stata
 // save the inverse mills estimate as mymills
 heckman wage educ age, select(married children educ age) mills(mymills)
 // t-test

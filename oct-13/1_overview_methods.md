@@ -5,10 +5,11 @@
 
 ### Loading a dataset
 
-Load the dataset we created in SAS and exported in Stata format:
+Load the sample dataset:
 
 ```Stata
-use "M:\sample_dataset.dta", clear
+use "S:\_Joost\2017_methods_ufl\sample_dataset.dta", clear
+
 ```
 
 If you have a balanced dataset you can set it as a time series, so you can easily get to lagged values:
