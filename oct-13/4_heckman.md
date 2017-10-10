@@ -88,6 +88,9 @@ ttest mymills = 0
 
 SAS dataset `wages` is the same as the Stata dataset, but with an added variable `selected` which is 1 if `wage` is nomissing, 0 otherwise (this is used in the selection step).
 
+
+## Maximum Likelihood
+
 ```SAS
 
 libname ds 'S:\_Joost\2017_methods_ufl';
@@ -98,6 +101,10 @@ proc qlim data = ds.wages ;
 run;
 ```
 
+## Two-step
+
+First estimate the selection estimation and capture the fitted value (xbeta):
+
 ```SAS
 proc logistic data=ds.wages;
    class selected ;
@@ -107,13 +114,21 @@ proc logistic data=ds.wages;
    title2 'First Stage:  Probit Estimates of Selection';
    run;
 quit;
+```
 
+Compute `lambda`:
+
+```SAS
 /* Compute lambda -- verify that lambda equals mills_twostep computed with Stata */
 data step1;
 set step1;
 lambda =  pdf('NORMAL', xbeta ) / cdf('NORMAL', xbeta ); /*inverse mills ratio using xbeta (not propensity_hat)*/
 run;
+```
 
+Estimate the second stage including `lambda`:
+
+```SAS
 /* Second stage -- verify with Stata twostep output (standard errors are a bit off) */
 proc surveyreg data=step1 ;
    model wage=education age lambda;   
