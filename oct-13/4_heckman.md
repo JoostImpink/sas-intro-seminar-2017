@@ -13,7 +13,7 @@ Firms that diversity (conglomerates) are found to be trading at a discount relat
 
 The classic example in econometrics is the wage offer of married women. In entering the labor market, people only participate if the wage exceeds their 'reservation' pay. We do not observe pay data non-participating people.
 
-Why do firms voluntary disclose bad news? Bad news disclosures reduce the stock price. However, we do not observe the counterfactual (what would stock price do if the firms did not disclose)? Potentially there is information (unobservatble to researchers), but available to (some) market participants that make managers do this. For example, non-disclosure can be used in a class-action lawsuit if investors can show management had knowledge and did not disclose. (Jenny's dissertation!)
+Why do firms voluntary disclose bad news? Bad news disclosures reduce the stock price. However, we do not observe the counterfactual (what would stock price do if the firms did not disclose)? Potentially there is information (unobservable to researchers), but available to (some) market participants that make managers do this. For example, a class action lawsuit can be successful if it can be shown that management had information and did not disclose it. (Jenny's dissertation!)
 
 ## Dealing with selection bias
 
@@ -50,7 +50,7 @@ The mechanics of the Heckman model assume that `e1` and `e2` have a bivariate no
 
 The Heckman selection test can be done in two separate steps, or in a single step using Maximum Likelihood (ML) which is more efficient.
 
-Software Limdep (short for limited dependent) is a well known tool to do 'exotic' regressions. The analyses can also be done with Stata ([rheckman.pdf](https://www.stata.com/manuals13/rheckman.pdf)), R ([package sampleSelection](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) and SAS. 
+Software Limdep (short for limited dependent) is a well known tool to do 'exotic' regressions. The analyses can also be done with Stata ([rheckman.pdf](https://www.stata.com/manuals13/rheckman.pdf)), R ([package sampleSelection](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf)) and SAS. 
 
 In Stata run:
 
