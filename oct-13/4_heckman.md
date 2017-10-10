@@ -50,7 +50,7 @@ The mechanics of the Heckman model assume that `e1` and `e2` have a bivariate no
 
 The Heckman selection test can be done in two separate steps, or in a single step using Maximum Likelihood (ML) which is more efficient.
 
-Software `Limdep` (short for limited dependent) is a well known tool to do 'exotic' regressions. The analyses can also be done with Stata ([rheckman.pdf](https://www.stata.com/manuals13/rheckman.pdf)), R ([package sampleSelection](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) and SAS. 
+Software Limdep (short for limited dependent) is a well known tool to do 'exotic' regressions. The analyses can also be done with Stata ([rheckman.pdf](https://www.stata.com/manuals13/rheckman.pdf)), R ([package sampleSelection](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) and SAS. 
 
 In Stata run:
 
@@ -69,7 +69,7 @@ Internally, Stata does note explictily estimates rho (correlation) and sigma (st
 Not using ML but a twostep procedure instead:
 
 ```Stata
-heckman wage educ age, select(married children educ age) twostep
+heckman wage educ age, select(married children educ age) twostep mills(mills_twostep)
 ```
 
 ## Test of self-selection
@@ -79,8 +79,44 @@ If the predicted inverse Mills ratio is not statistically different from 0, OLS 
 
 ```Stata
 // save the inverse mills estimate as mymills
-heckman wage educ age, select(married children educ age) mills(mymills)
+heckman wage educ age, select(married children educ age) mills(mills_ML)
 // t-test
 ttest mymills = 0
 ```
 
+## Heckman selection test using SAS
+
+SAS dataset `wages` is the same as the Stata dataset, but with an added variable `selected` which is 1 if `wage` is nomissing, 0 otherwise (this is used in the selection step).
+
+```SAS
+
+libname ds 'S:\_Joost\2017_methods_ufl';
+
+proc qlim data = ds.wages ;
+  model selected = married children education age /discrete;
+  model wage = education age /select(selected=1);
+run;
+```
+
+```SAS
+proc logistic data=ds.wages;
+   class selected ;
+   model selected (event='1') = married children education age / link=probit;
+   /* xbeta is the fitted value (Xb), and can be negative, used to construct lambda (inverse Mills ratio) */
+   output out=step1 xbeta=xbeta ;
+   title2 'First Stage:  Probit Estimates of Selection';
+   run;
+quit;
+
+/* Compute lambda -- verify that lambda equals mills_twostep computed with Stata */
+data step1;
+set step1;
+lambda =  pdf('NORMAL', xbeta ) / cdf('NORMAL', xbeta ); /*inverse mills ratio using xbeta (not propensity_hat)*/
+run;
+
+/* Second stage -- verify with Stata twostep output (standard errors are a bit off) */
+proc surveyreg data=step1 ;
+   model wage=education age lambda;   
+   title2 'Second Stage:  OLS Estimates of Model (with lambda)';
+run; 
+```
