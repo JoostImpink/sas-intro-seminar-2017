@@ -20,7 +20,7 @@ drawnorm x1 z1, n(1000) means(1, 1)
 // means
 matrix M = 0,0
 // Variance matrix
-matrix V = ( 1, 0.5 \ 0.5, 1)
+matrix V = ( 1, 0.75 \ 0.75, 1)
 // create
 drawnorm e1 e2 , n(1000) cov(V) means(M)
 
