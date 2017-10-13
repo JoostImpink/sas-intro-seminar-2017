@@ -64,9 +64,9 @@ regress wage educ age
 heckman wage educ age, select(married children educ age)
 ```
 
-Internally, Stata does note explictily estimates rho (correlation) and sigma (standard deviation of `e1`), but instead the lovely inverse hyperbolic tangent of rho (=1/2 ln [(1+p)/(1-p)]), and ln(sigma). These latter two are reported first under `/athrho` and `/lnsigma`. For convenience, Stata reports `rho`, `sigma` and `lambda` (which is the product of `rho` and `sigma`)
+Internally, Stata does note explictily estimate `rho` (correlation) and `sigma` (standard deviation of `e1`), but instead the lovely inverse hyperbolic tangent of `rho` (`=1/2 ln [(1+p)/(1-p)]`), and `ln(sigma)`. These latter two are reported first under `/athrho` and `/lnsigma`. For convenience, Stata reports `rho`, `sigma` and `lambda` (which is the product of `rho` and `sigma`).
 
-Not using ML but a twostep procedure instead:
+Using the twostep procedure instead:
 
 ```Stata
 heckman wage educ age, select(married children educ age) twostep mills(mills_twostep)
@@ -78,10 +78,10 @@ If the predicted inverse Mills ratio is not statistically different from 0, OLS 
 
 
 ```Stata
-// save the inverse mills estimate as mymills
+// save the inverse mills estimate
 heckman wage educ age, select(married children educ age) mills(mills_ML)
 // t-test
-ttest mymills = 0
+ttest mills_ML = 0
 ```
 
 ## Heckman selection test using SAS
@@ -103,7 +103,7 @@ run;
 
 ## Two-step
 
-First estimate the selection estimation and capture the fitted value (xbeta):
+First estimate the selection estimation and capture the fitted value (`xbeta`):
 
 ```SAS
 proc logistic data=ds.wages;
